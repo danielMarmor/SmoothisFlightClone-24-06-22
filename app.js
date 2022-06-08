@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.set('view engine', 'ejs');
 
 
-const dbURI = 'mongodb+srv://__user__:__password__@cluster0.2heep.mongodb.net/node-auth?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://__user__:__password__@cluster0.2heep.mongodb.net/node-auth';
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
