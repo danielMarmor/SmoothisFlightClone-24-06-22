@@ -30,7 +30,8 @@ const checkUser = (req, res, next) => {
           res.locals.user = null;
           next(); // ?? bad token
         } else {
-          let user = await User.findById(decodedToken.id);
+          const user_id = decodedToken.id;
+          let user = await User.findById(user_id);
           res.locals.user = user; // ? . better user-id, name
           next(); 
         }

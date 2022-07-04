@@ -1,45 +1,61 @@
 <%- include('partials/header'); -%>​
 
-<ul class="recipes">​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Banana Boost</h4>​
-    <p>Banana, Vanilla ice cream, Milk</p>​
-  </li>​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Tropical Twist</h4>​
-    <p>Peach, Pinapple, Apple juice</p>​
-  </li>​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Protein Packer</h4>​
-    <p>Oats, Peanut butter, Milk, Banana, Blueberries</p>​
-  </li>​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Banana Boost</h4>​
-    <p>Banana, Vanilla ice cream, Milk</p>​
-  </li>​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Tropical Twist</h4>​
-    <p>Peach, Pinapple, Apple juice</p>​
-  </li>​
-
-  <li class="recipe">​
-    <img src="/smoothie.png" alt="smoothie recipe icon">​
-    <h4>Protein Packer</h4>​
-    <p>Oats, Peanut butter, Milk, Banana, Blueberries</p>​
-  </li>​
-
-</ul>​
+<div class="tblContainer">
+    <div class="imgContainer">
+      <img src="/departure.jpg" class="imgBacklog">
+      <img src="/international.jpg" class="imgBacklog">
+      <img src="/flightBoard.jpg" class="imgBacklog">
+    </div>
+    <table id='tblFlights' class="table" data-email=<%- email %>></table>
+</div>
 ​
+
 <%- include('partials/footer'); -%>​
 
-​
+​<script type="text/javascript">
+  window.addEventListener('load', (event)=>{
+      const userEmail = document.querySelector("#tblFlights").dataset.email;
+      loadFlights(userEmail)
+      .then((data) =>{
+          const flights = data;
+          showFlights(flights);
+      });
+     
+  });
+
+  const loadFlights =(email)=>{
+     const promise =new Promise((resolve, reject)=>{
+      $.ajax({
+            url: `http://localhost:3000/tickets/${email}`,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+              resolve(data);         
+            }
+        });         
+     });
+     return promise;   
+  }
+
+  const showFlights = (flights) =>{
+    const table =$('#tblFlights'); 
+    table.empty();
+    const header = $(`<tr><th>Ticket Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure</th></tr>`);
+    table.append(header);
+    flights.forEach(fli => {
+        const dataRow = $(`<tr><td>${fli.ticket_id}</td>
+                        <td>${fli.first_name}</td>
+                        <td>${fli.last_name}</td>
+                        <td>${fli.origin_country_name}</td>
+                        <td>${fli.destination_country_name}</td>
+                        <td>${fli.departure_time}</td></tr>`);
+        table.append(dataRow);
+    });
+  }
+
+</script>
